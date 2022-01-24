@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LWManager", "LWManager\LWManager.csproj", "{199CB1D9-65E1-4B40-AF2C-EA82D192C138}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{199CB1D9-65E1-4B40-AF2C-EA82D192C138}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{199CB1D9-65E1-4B40-AF2C-EA82D192C138}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{199CB1D9-65E1-4B40-AF2C-EA82D192C138}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{199CB1D9-65E1-4B40-AF2C-EA82D192C138}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {794D6DDD-0567-4048-B2B6-158B08181B4F}
+	EndGlobalSection
+EndGlobal

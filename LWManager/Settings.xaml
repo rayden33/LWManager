@@ -1,0 +1,43 @@
+﻿<Window x:Class="LWManager.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LWManager"
+        mc:Ignorable="d"
+        Title="OrderProducts" Height="480" Width="320"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None">
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition  Height=".8*"/>
+            <RowDefinition  Height=".2*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Center" Grid.Row="0">
+            <Label Content="База данных" FontSize="20"/>
+            <Label Content="Экспорт и импорт:" FontSize="16"/>
+            <Button Content="Экспорт" Width="64" Margin="10" Click="ExportBtn" IsDefault="True"/>
+            <Button Content="Импорт" Width="64" Margin="10" Click="ImportBtn" IsDefault="True"/>
+            <Label Content="Долговой лимит:" FontSize="16"/>
+            <TextBox Height="20" Margin="5,0" Name="debtLimitTxtBox" PreviewTextInput="NumberValidationTextBox"/>
+            <Button Content="Сохранить" Width="64" Margin="10" Click="Button_Click_1" IsDefault="True"/>
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Center" Grid.Row="1">
+            <Label Content="Сменить пароль" FontSize="20"/>
+            <Label Content="Текущий пароль:" FontSize="16"/>
+            <TextBox Height="20" Margin="5,5,5,5" Name="currentPasswordTxtBox" />
+            <Label Content="Новый пароль" FontSize="16"/>
+            <TextBox Height="20" Margin="5,5,5,5" Name="newPasswordTxtBox" />
+            
+        </StackPanel>
+
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="2">
+            <Button Content="Сохранить" Width="64" Margin="10" Click="Button_Click" IsDefault="True"/>
+            <Button Content="Отмена" Width="64" Margin="10" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

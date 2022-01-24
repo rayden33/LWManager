@@ -1,0 +1,147 @@
+﻿<Window x:Class="LWManager.ProductList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LWManager"
+        mc:Ignorable="d"
+        Title="ProductList" Height="640" Width="600"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="0" Name="productsStackPanel" Height="240">
+            <Button Background="DodgerBlue" Margin="5" Click="editStdLesa_Click" Width="150">
+                <StackPanel VerticalAlignment="Stretch">
+                    <Label Content="Стандарт леса" FontSize="18" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Д:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaCountLbl" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="А:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaOrderCountLbl" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Label Content="Ножки" Name="bLesaSubNameLbl1" FontWeight="Bold" Padding="0"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Д:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaSubCountLbl1" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="А:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaSubOrderCountLbl1" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Label Content="Крестики" Name="bLesaSubNameLbl2" FontWeight="Bold" Padding="0"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Д:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaSubCountLbl2" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="А:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaSubOrderCountLbl2" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Label Content="Доски" Name="bLesaSubNameLbl3" FontWeight="Bold" Padding="0"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Д:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaSubCountLbl3" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="А:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaSubOrderCountLbl3" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+            <Button Background="DeepSkyBlue" Margin="5" Click="editNotStdLesa_Click" Width="150">
+                <StackPanel VerticalAlignment="Stretch">
+                    <Label Content="Не-&#xA;стандарт леса" FontSize="18" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="0" Name="mLesaCountLbl"/>
+                        <Label Content="шт."/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="Ножки" Name="mLesaSubNameLbl1"/>
+                        <Label Content="0" Name="mLesaSubCountLbl1"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="Крестики" Name="mLesaSubNameLbl2"/>
+                        <Label Content="0" Name="mLesaSubCountLbl2"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="Доски" Name="mLesaSubNameLbl3"/>
+                        <Label Content="0" Name="mLesaSubCountLbl3"/>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+            <Button Background="DarkTurquoise" Margin="5" Click="Button_Click_3" Width="150">
+                <StackPanel VerticalAlignment="Stretch">
+                    <Label Content="Колесики" FontSize="18" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="0" Name="kolesikCountLbl"/>
+                        <Label Content="шт."/>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+            
+
+        </StackPanel>
+
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1" Content="Другие товары" 
+               FontSize="32" FontWeight="Bold"/>
+
+        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Row="2">
+            <StackPanel Orientation="Vertical" Grid.Row="0" Margin="45,0,0,0">
+                <Label Content="Поиск" FontSize="14" FontWeight="Bold"/>
+                <TextBox  Width="160" Height="20" TextChanged="TextBox_TextChanged" x:Name="searchTxtBox" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,25">
+                <Button Content="Новый товар" Width="100" Margin="20,0" Click="Button_Click" Name="addProductBtn"/>
+                <Button Content="Изменить" Width="72" Margin="20,0" Click="Button_Click_2" Name="editProductBtn"/>
+            </StackPanel>
+        </StackPanel>
+
+        <DataGrid HorizontalAlignment="Stretch"  Grid.Row="3" VerticalAlignment="Stretch" AutoGenerateColumns="False" 
+                  ItemsSource="{Binding}" SelectionMode="Single" IsReadOnly="True" MinRowHeight="30" FontSize="18" 
+                  x:Name="ProductListDG" KeyUp="ProductListDG_KeyUp" SelectionChanged="ProductListDG_SelectionChanged" 
+                  MouseDoubleClick="ProductListDG_MouseDoubleClick" AlternatingRowBackground="#dbf0fe" Loaded="ProductListDG_Loaded" Grid.ColumnSpan="2" Margin="0,0.4,-0.4,0">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="Control">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding Id}" Width="auto"/>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="auto"/>
+                <DataGridTextColumn Header="Количество" Binding="{Binding Count}" Width="auto"/>
+                <DataGridTextColumn Header="Цена(шт.)" Binding="{Binding Price, ConverterCulture='ru-RU', StringFormat = N0}" Width="auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>

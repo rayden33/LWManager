@@ -1,0 +1,32 @@
+﻿<Window x:Class="LWManager.ReturnProductDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LWManager"
+        mc:Ignorable="d"
+        Title="ReturnProductDetails" Height="120" Width="320"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None">
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height=".6*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Center" Grid.Row="0">
+            <Label Content="Введите количество" FontSize="20"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Б.Леса" FontSize="16" Name="productNameLbl"/>
+                <TextBox Text="0" Width="32" Height="20" Margin="15,5,5,5" Name="returnedProductCountTxtBox" PreviewTextInput="NumberValidationTextBox"/>
+                <Label Content="шт. из" FontSize="16"/>
+                <TextBox Text="0" Width="32" Height="20" Margin="5" Name="orderProductCountTxtBox" PreviewTextInput="NumberValidationTextBox" IsReadOnly="True"/>
+                <Label Content="шт." FontSize="16"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="1">
+            <Button Content="Вернуть" Width="64" Margin="10" Click="Button_Click" IsDefault="True"/>
+            <Button Content="Отмена" Width="64" Margin="10" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

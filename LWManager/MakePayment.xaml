@@ -1,0 +1,49 @@
+﻿<Window x:Class="LWManager.MakePayment"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LWManager"
+        mc:Ignorable="d"
+        Title="MakePayment" Height="240" Width="320"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None">
+    <Grid Background="Azure">
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".8*"/>
+            <RowDefinition Height=".2*"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition Width="0.6*"/>
+                <ColumnDefinition Width="0.2*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel HorizontalAlignment="Center" Grid.Column="1">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <Label Content="Дата оплаты" FontSize="14" HorizontalAlignment="Center"/>
+                    <DatePicker Name="paymentDatePicker" SelectedDateFormat="Short" SelectedDate="{x:Static sys:DateTime.Now}" Height="22" Width="115"/>
+                    <Label Content="Сумма" FontSize="14" HorizontalAlignment="Center"/>
+                    <TextBox Text="{Binding Amount, ConverterCulture='ru-RU', StringFormat = N0}" Height="20"
+                             PreviewTextInput="NumberValidationTextBox"/>
+                    <Label Content="Способ оплаты" FontSize="14"/>
+                    <ComboBox Name="paymentTypeCombox" IsEditable="True">
+                        <ComboBoxItem Content="Пластик"/>
+                        <ComboBoxItem Content="Наличные" IsSelected="True"/>
+                        <ComboBoxItem Content="Перечисление"/>
+                        <ComboBoxItem Content="Возврать"/>
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="1">
+            <Button Content="Оплатить" Width="64" Margin="10" IsDefault="True" Click="Button_Click"/>
+            <Button Content="Отмена" Width="64" Margin="10" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

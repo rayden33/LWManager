@@ -1,0 +1,64 @@
+﻿<Window x:Class="LWManager.ClientEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+        xmlns:local="clr-namespace:LWManager"
+        mc:Ignorable="d"
+        Title="ClientEditor" Height="320" Width="300"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="8" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="8" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Имя" />
+        <TextBlock Text="Фамилия" Grid.Row="1" />
+        <TextBlock Text="Отчество" Grid.Row="2" />
+        <TextBlock Text="Паспорт" Grid.Row="3" />
+        <TextBlock Text="Телефон" Grid.Row="4" />
+        <TextBlock Text="Второй телефон" Grid.Row="5" />
+        <TextBlock Text="Адрес" Grid.Row="6" />
+
+        <TextBox Text="{Binding Name}" Grid.Column="1" />
+        <TextBox Text="{Binding Surname}" Grid.Column="1" Grid.Row="1" />
+        <TextBox Text="{Binding Middle_name}" Grid.Column="1" Grid.Row="2" />
+        <TextBox Text="{Binding Pass_number}" Grid.Column="1" Grid.Row="3" Name="clientPassNumberTextBox"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4" >
+            <Label Content="+998" VerticalAlignment="Center"/>
+            <TextBox  Name="phoneNumberTxtBox" Text="{Binding Phone_number}" Width="140" MaxLength="14" 
+                     PreviewTextInput="NumberValidationTextBox" LostFocus="phoneNumberTxtBox_LostFocus" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="5" >
+            <Label Content="+998" VerticalAlignment="Center"/>
+            <TextBox  Name="phoneNumber2TxtBox" Text="{Binding Phone_number2}" Width="140" MaxLength="14" 
+                     PreviewTextInput="NumberValidationTextBox" LostFocus="phoneNumber2TxtBox_LostFocus" />
+        </StackPanel>
+
+        <TextBox Text="{Binding Address}" Grid.Column="1" Grid.Row="6" />
+
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.Column="1">
+            <Button IsDefault="True" Click="Accept_Click" MinWidth="60" Margin="5">OK</Button>
+            <Button IsCancel="True" MinWidth="60" Margin="5">Отмена</Button>
+        </StackPanel>
+    </Grid>
+</Window>

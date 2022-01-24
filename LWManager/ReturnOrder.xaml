@@ -1,0 +1,54 @@
+﻿<Window x:Class="LWManager.ReturnOrder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LWManager"
+        mc:Ignorable="d"
+        Title="ReturnOrder" Height="320" Width="420">
+    <Grid Background="Azure">
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".8*"/>
+            <RowDefinition Height=".2*"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.1*"/>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="0.1*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel HorizontalAlignment="Center" Grid.Column="1">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <Label Content="Дата закрытия" FontSize="14" HorizontalAlignment="Center"/>
+                    <DatePicker Name="returnDatePicker" SelectedDateFormat="Short" SelectedDate="{x:Static sys:DateTime.Now}" Height="22" Width="115"/>
+                    <Label Content="Продукты" HorizontalAlignment="Center" Margin="10,0,0,0" FontSize="14" Grid.Row="0"/>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="1">
+                        <ListBox Margin="5" Width="240" HorizontalContentAlignment="Center" Name="otherProductListBox" 
+                                 MaxHeight="150" MouseDoubleClick="otherProductListBox_MouseDoubleClick">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" FontSize="12" Margin="5"/>
+                                        <TextBlock Text="{Binding Return_count}" FontSize="12" Margin="5" />
+                                        <TextBlock Text="из" FontSize="12" Margin="5" />
+                                        <TextBlock Text="{Binding Count}" FontSize="12" Margin="5" />
+                                        <TextBlock Text="{Binding Price}" FontSize="12" Margin="5" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="1">
+            <Button Content="Вернут" Width="64" Margin="10" IsDefault="True" Click="Button_Click_3"/>
+            <Button Content="Отмена" Width="64" Margin="10" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

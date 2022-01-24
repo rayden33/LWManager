@@ -1,0 +1,57 @@
+﻿<Window x:Class="LWManager.OrderProductDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LWManager"
+        mc:Ignorable="d"
+        Title="OrderProducts" Height="240" Width="320"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None">
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".5*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Center" Grid.Row="0">
+            <Label Content="Введите количество" FontSize="20"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Б.Леса" FontSize="16" Name="productNameLbl"/>
+                <TextBox Text="0" Width="32" Height="20" Margin="15,5,5,5" Name="productCountTxtBox" PreviewTextInput="NumberValidationTextBox" TextChanged="productCountTxtBox_TextChanged"/>
+                <Label Content="шт." FontSize="16"/>
+                <TextBox Text="0" Width="32" Height="20" Margin="15,5,5,5" Name="productPriceTxtBox" PreviewTextInput="NumberValidationTextBox"/>
+                <Label Content="сум" FontSize="16"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Center" Grid.Row="1" Name="subProductsSP">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Крестики" FontSize="16"/>
+                <TextBox Text="0" Width="32" Height="20" Margin="15,5,5,5" Name="subProductCountTxtBox1" PreviewTextInput="NumberValidationTextBox" />
+                <Label Content="шт." FontSize="16"/>
+                
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Ножки" FontSize="16"/>
+                <TextBox Text="0" Width="32" Height="20" Margin="15,5,5,5" Name="subProductCountTxtBox2" PreviewTextInput="NumberValidationTextBox"/>
+                <Label Content="шт." FontSize="16"/>
+                
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Доски" FontSize="16"/>
+                <TextBox Text="0" Width="32" Height="20" Margin="15,5,5,5" Name="subProductCountTxtBox3" PreviewTextInput="NumberValidationTextBox"/>
+                <Label Content="шт." FontSize="16"/>
+                
+            </StackPanel>
+
+            
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="1">
+            <Button Content="Добавить" Width="64" Margin="10" Click="Button_Click" IsDefault="True"/>
+            <Button Content="Отмена" Width="64" Margin="10" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

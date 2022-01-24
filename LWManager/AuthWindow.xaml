@@ -1,0 +1,30 @@
+﻿<Window x:Class="LWManager.AuthWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LWManager"
+        mc:Ignorable="d"
+        Title="AuthWindow" Height="320" Width="240"
+        WindowStartupLocation="CenterScreen">
+    <Grid ShowGridLines="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".50*"/>
+            <RowDefinition Height=".25*"/>
+            <RowDefinition Height=".25*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Background="Silver" Grid.Row="0"/>
+
+        <Image Source="Resources/LesaImg.jpg" Grid.Row="0"/>
+
+        <!--<Label Content="Введите пароль" Grid.Row="1" HorizontalAlignment="Center"/>-->
+        <!--<TextBox x:Name="pwdTxtBox" Grid.Row="1" Width="120" Height="22" TextAlignment="Center" />-->
+        <StackPanel Grid.Row="1" Margin="10">
+            <Label Content="Введите пароль" HorizontalAlignment="Center"/>
+            <PasswordBox x:Name="pwdPassBox" MaxLength="15" Width="120" KeyDown="pwdPassBox_KeyDown"/>
+        </StackPanel>
+
+        <Button Content="Войти" Margin="20" Grid.Row="2" Width="120" Click="Button_Click"/>
+    </Grid>
+</Window>

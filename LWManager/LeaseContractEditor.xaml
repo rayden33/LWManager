@@ -1,0 +1,166 @@
+﻿<Window x:Class="LWManager.LeaseContractEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LWManager"
+        mc:Ignorable="d"
+        Title="LeaseContractEditor" Height="680" Width="580"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="ToolWindow"
+        ResizeMode="NoResize">
+    
+    <Grid ShowGridLines="True" Background="AliceBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".2*"/>
+                <RowDefinition Height=".8*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="0">
+                <Label Content="Клиент" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="20"/>
+                <Button Background="CadetBlue" x:Name="chooseClientBtn" Content="Выбрать" Margin="5" Click="chooseClientBtn_Click" />
+                <Button Background="GreenYellow" x:Name="createClientBtn" Content="Создать" Margin="5" Click="createClientBtn_Click" />
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <Label Content="Ф" FontSize="25" Name="clientSurnameTxtBox"/>
+                <Label Content="И" FontSize="25" Name="clientNameTxtBox"/>
+                <Label Content="О" FontSize="25" Name="clientMiddleNameTxtBox"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label Content="+998 (99) 123-45-67" FontSize="20" Name="clientPhoneNumberTxtBox"/>
+                    <Label Content="+998 (99) 123-45-67" FontSize="20" Name="clientPhoneNumber2TxtBox"/>
+                    <Label Content="AA1234567" FontSize="20" Name="clientPassNumberTxtBox"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".2*"/>
+                <RowDefinition Height=".8*"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="Продукты" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="20" Grid.Row="0"/>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Name="productsStackPanel" IsEnabled="False">
+                <Button Background="DodgerBlue" Margin="5" Click="Button_Click" Width="100">
+                    <StackPanel VerticalAlignment="Stretch">
+                        <Label Content="Станда-&#xA;рт леса" FontSize="18" VerticalAlignment="Top" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="0" Name="bLesaCountLbl"/>
+                            <Label Content="шт."/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Ножки" Name="bLesaSubNameLbl1"/>
+                            <Label Content="0" Name="bLesaSubCountLbl1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Крестики" Name="bLesaSubNameLbl2"/>
+                            <Label Content="0" Name="bLesaSubCountLbl2"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Доски" Name="bLesaSubNameLbl3"/>
+                            <Label Content="0" Name="bLesaSubCountLbl3"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Button>
+                <Button Background="DeepSkyBlue" Margin="5" Click="Button_Click_1" Width="100">
+                    <StackPanel VerticalAlignment="Stretch">
+                        <Label Content="Нестан-&#xA;дарт леса" FontSize="18" VerticalAlignment="Top" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="0" Name="mLesaCountLbl"/>
+                            <Label Content="шт."/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Ножки" Name="mLesaSubNameLbl1"/>
+                            <Label Content="0" Name="mLesaSubCountLbl1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Крестики" Name="mLesaSubNameLbl2"/>
+                            <Label Content="0" Name="mLesaSubCountLbl2"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Доски" Name="mLesaSubNameLbl3"/>
+                            <Label Content="0" Name="mLesaSubCountLbl3"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Button>
+                <Button Background="DarkTurquoise" Margin="5" Click="Button_Click_3" Width="100">
+                    <StackPanel VerticalAlignment="Stretch">
+                        <Label Content="Колесики" FontSize="18" VerticalAlignment="Top" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="0" Name="kolesikCountLbl"/>
+                            <Label Content="шт."/>
+                        </StackPanel>
+                    </StackPanel>
+                </Button>
+                <StackPanel Orientation="Vertical" Width="200">
+                    <Button Background="DarkTurquoise" Click="Button_Click_2" Content="Другой продукт" />
+                    <ListBox Margin="5" Width="180" HorizontalContentAlignment="Center" Name="otherProductListBox" MaxHeight="135">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" FontSize="12" Margin="5"/>
+                                    <TextBlock Text="{Binding Count}" FontSize="12" Margin="5" />
+                                    <TextBlock Text="{Binding Price}" FontSize="12" Margin="5" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    
+                </StackPanel>
+                
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".2*"/>
+                <RowDefinition Height=".8*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="0">
+                <Label Content="Договор" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="20"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Номер договора:" FontSize="15" Margin="5"/>
+                    <TextBox Name="contractIdTxtBox" Text="{Binding Contract_id}" Margin="5" Height="20" Width="96"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Цена доставки:" FontSize="15" Margin="5"/>
+                    <TextBox Text="{Binding Delivery_amount, ConverterCulture='ru-RU', StringFormat = N0}" Name="deliveryAmountTxtBox"
+                             Margin="5" Height="20" Width="64"  PreviewTextInput="NumberValidationTextBox" TextChanged="TextBox_TextChanged"/>
+                    <Label Content="Место доставки:" FontSize="15" Margin="45,5,5,5"/>
+                    <TextBox Name="deliveryAddressTxtBox" Text="{Binding Delivery_address}" Margin="5" Height="20" Width="100" TextChanged="TextBox_TextChanged_1"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Дата заказа:" FontSize="15" Margin="5"/>
+                    <DatePicker Name="createDatePicker" SelectedDateFormat="Short" SelectedDate="{x:Static sys:DateTime.Now}" Height="22" Width="115"/>
+                    <CheckBox Name="usedDayChBox" Content="Не считать сегодняшний день" FontSize="15" Margin="25,5,5,5" VerticalAlignment="Center"/>
+                </StackPanel>
+                <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label Content="Итог:" FontSize="25"/>
+                    <Label Name="totalAmountLbl"  Content="0" FontSize="25"/>
+                </StackPanel>-->
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="3" ShowGridLines="True">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="0">
+                <Button Name="AcceptBtn" IsDefault="True" Click="Accept_Click" MinWidth="60" Margin="5" IsEnabled="False">Добавить</Button>
+                <Button IsCancel="True" MinWidth="60" Margin="5">Отмена</Button>
+            </StackPanel>
+        </Grid>
+
+        
+    </Grid>
+</Window>
