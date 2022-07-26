@@ -26,6 +26,7 @@ namespace LWManager
             public int Return_count { get; set; }
             public int Count { get; set; }
             public int Price { get; set; }
+            public int PricePerProduct { get; set; }
         }
         private class PaymentListItem
         {
@@ -35,6 +36,8 @@ namespace LWManager
         }
         ApplicationContext dataBaseAC;
         MWViewContract selectedContract;
+        DateTime tempDateTime;
+        TimeSpan tempTimeSpan;
         public LeaseContractViewer( ApplicationContext dbAp, MWViewContract tmpContract)
         {
             InitializeComponent();
@@ -78,7 +81,21 @@ namespace LWManager
                     if (returnedLeaseContract.Return_datetime > 0)
                         returnDateTimeLbl.Content = UnixTimeStampToDateTime(returnedLeaseContract.Return_datetime).ToShortDateString();
 
+                    // Feature for sum amount
+                    debtLbl.Visibility = Visibility.Visible;
+                    debtAmountLbl.Visibility = Visibility.Visible;
+                    tempDateTime = UnixTimeStampToDateTime(returnedLeaseContract.Create_datetime);
+                    if (returnedLeaseContract.Return_datetime == 0)
+                        tempTimeSpan = DateTime.Now - tempDateTime;
+                    else
+                        tempTimeSpan = UnixTimeStampToDateTime(returnedLeaseContract.Return_datetime) - tempDateTime;
+                    int usedDaysTotal = tempTimeSpan.Days + returnedLeaseContract.Used_days;
+
+                    returnedLeaseContract.Paid_amount -= (returnedLeaseContract.Price_per_day * usedDaysTotal + returnedLeaseContract.Delivery_amount);
                     this.DataContext = returnedLeaseContract;
+
+                    dataBaseAC.Entry(returnedLeaseContract).State = System.Data.Entity.EntityState.Unchanged;
+                    dataBaseAC.SaveChanges();
                     break;
                 case 2:/// Closed contracts
                     ArchiveLeaseContract archiveLeaseContract = dataBaseAC.ArchiveLeaseContracts.Where(c => c.Order_id == selectedContract.OrderId).FirstOrDefault();
@@ -109,6 +126,7 @@ namespace LWManager
                 otherProductListItem.Name = dataBaseAC.Products.Find(op.Product_id).Name;
                 otherProductListItem.Count = op.Count;
                 otherProductListItem.Price = op.Count * op.Price;
+                otherProductListItem.PricePerProduct = op.Price;
                 if (dataBaseAC.ReturnProducts.Where(rp => rp.Order_id == op.Order_id && rp.Product_id == op.Product_id).FirstOrDefault() != null)
                     otherProductListItem.Return_count = dataBaseAC.ReturnProducts.Where(rp => rp.Order_id == op.Order_id && rp.Product_id == op.Product_id).FirstOrDefault().Count;
                 otherProductListItems.Add(otherProductListItem);
@@ -126,6 +144,8 @@ namespace LWManager
                 
             }
             paymentListBox.ItemsSource = paymentListItems;
+
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

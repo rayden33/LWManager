@@ -69,7 +69,7 @@ namespace LWManager
                 tempViewContract.RowNumber = i;
 
                 tempClient = dataBaseAC.Clients.FirstOrDefault(client => client.Id == contract.Client_id);
-                tempViewContract.FISH = (tempClient.Surname + " " + tempClient.Name);
+                tempViewContract.FISH = (tempClient.Name + " " + tempClient.Surname);
 
                 tempDateTime = UnixTimeStampToDateTime(contract.Create_datetime);
                 tempViewContract.CreationDateTime = tempDateTime.ToShortDateString();
@@ -78,7 +78,7 @@ namespace LWManager
                     tempTimeSpan = DateTime.Now - tempDateTime;
                 else
                     tempTimeSpan = UnixTimeStampToDateTime(contract.Return_datetime) - tempDateTime;
-                tempViewContract.UsedDays = $"{tempTimeSpan.Days} " + ((contract.Used_days > 0) ? ($"(+{contract.Used_days})") : (""));
+                tempViewContract.UsedDays = $"{tempTimeSpan.Days + 1} " + ((contract.Used_days > 0) ? ("") : ("(-1)"));
                 int usedDaysTotal = tempTimeSpan.Days + contract.Used_days;
 
                 if (dataBaseAC.OrderProducts.Where(op => op.Order_id == contract.Id && op.Product_id == 5).FirstOrDefault() != null)
@@ -360,7 +360,7 @@ namespace LWManager
         private void AutoSizeWindowAndElements()
         {
             DataGrid DataGridForResize = leaseContractDataGrid;
-            double DefaultPaddingPerColumn = 20;
+            double DefaultPaddingPerColumn = 10;
             double FreeSpaceForPaddingPerColumn = 0;
             double SummOfWidthAllColumns = 0;
             foreach (DataGridColumn col in DataGridForResize.Columns)
@@ -382,6 +382,27 @@ namespace LWManager
         private void leaseContractDataGrid_Loaded(object sender, RoutedEventArgs e)
         {
             AutoSizeWindowAndElements();
+        }
+
+        private void LeaseContractEditBtn(object sender, RoutedEventArgs e)
+        {
+            if (leaseContractDataGrid.SelectedItem == null)
+                return;
+            MWViewContract mWViewContract = leaseContractDataGrid.SelectedItem as MWViewContract;
+            
+            EditLeaseContract editLeaseContract = new EditLeaseContract(dataBaseAC.LeaseContracts.Where(l => l.Id == mWViewContract.OrderId).FirstOrDefault(), dataBaseAC);
+            if(editLeaseContract.ShowDialog() == true)
+            {
+                dataBaseAC.Entry(editLeaseContract.LeaseContract).State = EntityState.Modified;
+                dataBaseAC.SaveChanges();
+            }
+
+            GetDbToDataGrid();
+        }
+
+        private void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

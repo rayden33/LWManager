@@ -25,6 +25,8 @@
                 <ColumnDefinition Width=".35*"/>
                 <ColumnDefinition Width=".35*"/>
                 <ColumnDefinition Width=".35*"/>
+                <ColumnDefinition Width=".35*"/>
+                <ColumnDefinition Width=".35*"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
@@ -40,27 +42,39 @@
                     <Label Content="Просмотр" FontWeight="Bold"/>
                 </StackPanel>
             </Button>
-            <Button Grid.Column="2" Margin="10,0,10,0"  Click="Button_Click_2" Background="Transparent" BorderThickness="0">
+            <Button Grid.Column="2" Margin="10,0,10,0" Click="LeaseContractEditBtn" Background="Transparent" BorderThickness="0">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="Resources/qwe.png" Height="32"/>
+                    <Label Content="Изменить" FontWeight="Bold"/>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="3" Margin="10,0,10,0"  Click="Button_Click_2" Background="Transparent" BorderThickness="0">
                 <StackPanel Orientation="Vertical">
                     <Image Source="Resources/banking_cash_payment_money_cash_dollar_pay-512.png" Height="32"/>
                     <Label Content="Оплата" FontWeight="Bold"/>
                 </StackPanel>
             </Button>
-            <Button Grid.Column="3" Margin="10,0,10,0" Click="Button_Click_4" Background="Transparent" BorderThickness="0">
+            <Button Grid.Column="4" Margin="10,0,10,0" Click="Button_Click_4" Background="Transparent" BorderThickness="0">
                 <StackPanel Orientation="Vertical">
                     <Image Source="Resources/Easy_Returns-512.png" Height="32"/>
                     <Label Content="Возврат" FontWeight="Bold"/>
                 </StackPanel>
             </Button>
-            <Button Grid.Column="4" Margin="10,0,10,0" Background="Transparent" Click="Button_Click_1" BorderThickness="0">
+            <Button Grid.Column="5" Margin="10,0,10,0" Background="Transparent" Click="Button_Click_1" BorderThickness="0">
                 <StackPanel Orientation="Vertical">
                     <Image Source="542-5427453_client-icon-clipart-clipart-royalty-free-library-client.png" Height="32"/>
                     <Label Content="Клиенты" FontWeight="Bold"/>
                 </StackPanel>
             </Button>
+            <Button Grid.Column="6" Margin="10,0,10,0" Background="Transparent" BorderThickness="0" Click="Button_Click_10">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="/analytics-icon-png-22.jpg" Height="32" Stretch="Uniform"/>
+                    <Label Content="Статистика" FontWeight="Bold"/>
+                </StackPanel>
+            </Button>
             <!--Time label-->
             <Label Name="lblTime" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Grid.Column="5" Grid.Row="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
+                   Grid.Column="7" Grid.Row="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
         </Grid>
 
         <Grid Background="WhiteSmoke" Grid.Row="2">
@@ -119,7 +133,7 @@
         <DataGrid Name="leaseContractDataGrid" HorizontalAlignment="Stretch"  Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Stretch" 
                   AutoGenerateColumns="False" ItemsSource="{Binding}" SelectionMode="Single" IsReadOnly="True" MinRowHeight="30" 
                   FontSize="18" SelectionChanged="leaseContractDataGrid_SelectionChanged" LoadingRow="leaseContractDataGrid_LoadingRow"
-                  AlternatingRowBackground="#dbf0fe" CanUserResizeColumns="False" CanUserResizeRows="False" Loaded="leaseContractDataGrid_Loaded">
+                   CanUserResizeColumns="False" CanUserResizeRows="False" Loaded="leaseContractDataGrid_Loaded">
 
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="Control">
@@ -131,12 +145,12 @@
                 <DataGridTextColumn Header="Фамилия Имя" Binding="{Binding FISH}"/>
                 <DataGridTextColumn Header="Дата" Binding="{Binding CreationDateTime}" />
                 <DataGridTextColumn Header="День" Binding="{Binding UsedDays}"/>
-                <DataGridTextColumn Header="Стандарт&#xA; леса" Binding="{Binding BLease}"/>
-                <DataGridTextColumn Header="Нестандарт&#xA; леса" Binding="{Binding LLease}"/>
-                <DataGridTextColumn Header="Колесики" Binding="{Binding Wheel}"/>
+                <DataGridTextColumn Header="СТ леса" Binding="{Binding BLease}"/>
+                <DataGridTextColumn Header="НС леса" Binding="{Binding LLease}"/>
+                <DataGridTextColumn Header="Колеса" Binding="{Binding Wheel}"/>
                 <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
                 <DataGridTextColumn Header="Доставка" Binding="{Binding DeliveryPrice, ConverterCulture='ru-RU', StringFormat = N0}" IsReadOnly="False"/>
-                <DataGridTextColumn Header="Адрес доставки" Binding="{Binding DeliveryAddress}" />
+                <!--<DataGridTextColumn Header="Адрес доставки" Binding="{Binding DeliveryAddress}" />-->
                 <DataGridTextColumn Header="Оплачено" Binding="{Binding PaidAmount, ConverterCulture='ru-RU', StringFormat = N0}" />
                 <DataGridTextColumn Header="Сумма" Binding="{Binding Sum, ConverterCulture='ru-RU', StringFormat = N0}" />
             </DataGrid.Columns>
@@ -145,7 +159,7 @@
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsDebtor}" Value="1">
-                            <Setter Property="Background" Value="Red">
+                            <Setter Property="Background" Value="#FFFF8E8E">
                             </Setter>
                         </DataTrigger>
 

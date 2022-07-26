@@ -17,6 +17,7 @@ namespace LWManager
         private string phone_number;
         private string phone_number2;
         private string address;
+        private int last_order_datetime;
         private int is_blocked;
 
         public int Id { get; set; }
@@ -83,6 +84,15 @@ namespace LWManager
             {
                 address = value;
                 OnPropertyChanged("address");
+            }
+        }
+        public int Last_order_datetime
+        {
+            get { return last_order_datetime; }
+            set
+            {
+                last_order_datetime = value;
+                OnPropertyChanged("last_order_datetime");
             }
         }
         public int Is_blocked

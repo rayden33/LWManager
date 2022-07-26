@@ -48,7 +48,7 @@ namespace LWManager
         private int _selectionLength;
         private List<string> _addressSuggestions = new List<string>();
 
-        public LeaseContractEditor( LeaseContract lc, ApplicationContext dbAC)
+        public LeaseContractEditor(LeaseContract lc, ApplicationContext dbAC)
         {
             InitializeComponent();
             LeaseContract = lc;
@@ -85,6 +85,8 @@ namespace LWManager
                 if (returnedLeaseContract.Delivery_address != null)
                     _addressSuggestions.Add(returnedLeaseContract.Delivery_address);
             }
+
+            loadSuggestionAddresses();
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
@@ -93,6 +95,7 @@ namespace LWManager
             LeaseContract.Client_id = selectedClient.Id;
 
             LeaseContract.Price_per_day = 0;
+            LeaseContract.Delivery_address = deliveryAddressCmbBox.Text;
             foreach (OrderProduct op in tmpOrderProductsBLesa)
             {
                 LeaseContract.Price_per_day += (op.Count * op.Price);
@@ -127,6 +130,7 @@ namespace LWManager
 
             //dataBaseAC.SaveChanges();
 
+            selectedClient.Last_order_datetime = (Int32)(createDatePicker.SelectedDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             this.DialogResult = true;
         }
 
@@ -274,7 +278,7 @@ namespace LWManager
             }
         }
 
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        /*private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
         {
             string tmpTxt = deliveryAddressTxtBox.Text;
             if (tmpTxt.Length > 0 && tmpTxt != _currentSuggestion && _prevText != tmpTxt)
@@ -292,7 +296,18 @@ namespace LWManager
             }
             _prevText = tmpTxt;
             
+        }*/
+
+        private void loadSuggestionAddresses()
+        {
+
+            //List<string> tmpList = new List<string>();
+            //tmpList.AddRange(_addressSuggestions);
+            foreach (string s in _addressSuggestions)
+                deliveryAddressCmbBox.Items.Add(s);
         }
+
+        
         /*private void CalculateTotalAmount()
 {
 int total = Convert.ToInt32(totalAmountLbl.Content);

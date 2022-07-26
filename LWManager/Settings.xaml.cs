@@ -89,7 +89,7 @@ namespace LWManager
             }
             if (debtLimitTxtBox.Text[0] != '-')
             {
-                Properties.Settings.Default.DebtLimit = Convert.ToInt32(debtLimitTxtBox.Text);
+                Properties.Settings.Default.DebtLimit = Convert.ToInt32(debtLimitTxtBox.Text.Replace(" ",""));
                 Properties.Settings.Default.Save();
                 MessageBox.Show("Успешно сохранен!!!");
             }

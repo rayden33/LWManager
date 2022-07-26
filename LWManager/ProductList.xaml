@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LWManager"
         mc:Ignorable="d"
-        Title="ProductList" Height="640" Width="600"
+        Title="ProductList" Height="680" Width="600"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <Grid>
@@ -16,63 +16,81 @@
             <RowDefinition/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="80"/>
-            <RowDefinition/>
+            <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="0" Name="productsStackPanel" Height="240">
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="0" Name="productsStackPanel" Height="340">
             <Button Background="DodgerBlue" Margin="5" Click="editStdLesa_Click" Width="150">
                 <StackPanel VerticalAlignment="Stretch">
                     <Label Content="Стандарт леса" FontSize="18" VerticalAlignment="Top" FontWeight="Bold"/>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Label Content="Д:" Padding="5,0"/>
+                            <Label Content="Склад:" Padding="5,0"/>
                             <Label Content="0" Name="bLesaCountLbl" Padding="5,0"/>
                             <Label Content="шт." Padding="5,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Label Content="А:" Padding="5,0"/>
+                            <Label Content="Аренда:" Padding="5,0"/>
                             <Label Content="0" Name="bLesaOrderCountLbl" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Общее:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaSumCountLbl" Padding="5,0"/>
                             <Label Content="шт." Padding="5,0"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <Label Content="Ножки" Name="bLesaSubNameLbl1" FontWeight="Bold" Padding="0"/>
+                        <Label Content="Ножки" Name="bLesaSubNameLbl1" FontWeight="Bold" Padding="0,5,0,0" HorizontalAlignment="Center"/>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Label Content="Д:" Padding="5,0"/>
+                            <Label Content="Склад:" Padding="5,0"/>
                             <Label Content="0" Name="bLesaSubCountLbl1" Padding="5,0"/>
                             <Label Content="шт." Padding="5,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Label Content="А:" Padding="5,0"/>
+                            <Label Content="Аренда:" Padding="5,0"/>
                             <Label Content="0" Name="bLesaSubOrderCountLbl1" Padding="5,0"/>
                             <Label Content="шт." Padding="5,0"/>
                         </StackPanel>
-                        
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Общее:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaSubSumCountLbl1" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <Label Content="Крестики" Name="bLesaSubNameLbl2" FontWeight="Bold" Padding="0"/>
+                        <Label Content="Крестики" Name="bLesaSubNameLbl2" FontWeight="Bold" Padding="0,5,0,0" HorizontalAlignment="Center"/>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Label Content="Д:" Padding="5,0"/>
+                            <Label Content="Склад:" Padding="5,0"/>
                             <Label Content="0" Name="bLesaSubCountLbl2" Padding="5,0"/>
                             <Label Content="шт." Padding="5,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Label Content="А:" Padding="5,0"/>
+                            <Label Content="Аренда:" Padding="5,0"/>
                             <Label Content="0" Name="bLesaSubOrderCountLbl2" Padding="5,0"/>
                             <Label Content="шт." Padding="5,0"/>
                         </StackPanel>
-                        
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Общее:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaSubSumCountLbl2" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <Label Content="Доски" Name="bLesaSubNameLbl3" FontWeight="Bold" Padding="0"/>
+                        <Label Content="Доски" Name="bLesaSubNameLbl3" FontWeight="Bold" Padding="0,5,0,0" HorizontalAlignment="Center"/>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Label Content="Д:" Padding="5,0"/>
+                            <Label Content="Склад:" Padding="5,0"/>
                             <Label Content="0" Name="bLesaSubCountLbl3" Padding="5,0"/>
                             <Label Content="шт." Padding="5,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Label Content="А:" Padding="5,0"/>
+                            <Label Content="Аренда:" Padding="5,0"/>
                             <Label Content="0" Name="bLesaSubOrderCountLbl3" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Общее:" Padding="5,0"/>
+                            <Label Content="0" Name="bLesaSubSumCountLbl3" Padding="5,0"/>
                             <Label Content="шт." Padding="5,0"/>
                         </StackPanel>
                     </StackPanel>
@@ -81,30 +99,100 @@
             <Button Background="DeepSkyBlue" Margin="5" Click="editNotStdLesa_Click" Width="150">
                 <StackPanel VerticalAlignment="Stretch">
                     <Label Content="Не-&#xA;стандарт леса" FontSize="18" VerticalAlignment="Top" FontWeight="Bold"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Label Content="0" Name="mLesaCountLbl"/>
-                        <Label Content="шт."/>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Склад:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaCountLbl" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Аренда:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaOrderCountLbl" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Общее:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaSumCountLbl" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Label Content="Ножки" Name="mLesaSubNameLbl1"/>
-                        <Label Content="0" Name="mLesaSubCountLbl1"/>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Label Content="Ножки" Name="mLesaSubNameLbl1" FontWeight="Bold" Padding="0,5,0,0" HorizontalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Склад:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaSubCountLbl1" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Аренда:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaSubOrderCountLbl1" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Общее:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaSubSumCountLbl1" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Label Content="Крестики" Name="mLesaSubNameLbl2"/>
-                        <Label Content="0" Name="mLesaSubCountLbl2"/>
+
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Label Content="Крестики" Name="mLesaSubNameLbl2" FontWeight="Bold"  Padding="0,5,0,0" HorizontalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Склад:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaSubCountLbl2" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Аренда:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaSubOrderCountLbl2" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Общее:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaSubSumCountLbl2" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Label Content="Доски" Name="mLesaSubNameLbl3"/>
-                        <Label Content="0" Name="mLesaSubCountLbl3"/>
+
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Label Content="Доски" Name="mLesaSubNameLbl3" FontWeight="Bold"  Padding="0,5,0,0" HorizontalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Склад:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaSubCountLbl3" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Аренда:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaSubOrderCountLbl3" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Общее:" Padding="5,0"/>
+                            <Label Content="0" Name="mLesaSubSumCountLbl3" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </Button>
             <Button Background="DarkTurquoise" Margin="5" Click="Button_Click_3" Width="150">
                 <StackPanel VerticalAlignment="Stretch">
-                    <Label Content="Колесики" FontSize="18" VerticalAlignment="Top" FontWeight="Bold"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Label Content="0" Name="kolesikCountLbl"/>
-                        <Label Content="шт."/>
+                    <Label Content="Колесики" FontSize="18" VerticalAlignment="Top" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Склад:" Padding="5,0"/>
+                            <Label Content="0" Name="kolesikCountLbl" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Аренда:" Padding="5,0"/>
+                            <Label Content="0" Name="kolesikOrderCountLbl" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="Общее:" Padding="5,0"/>
+                            <Label Content="0" Name="kolesikSumCountLbl" Padding="5,0"/>
+                            <Label Content="шт." Padding="5,0"/>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </Button>

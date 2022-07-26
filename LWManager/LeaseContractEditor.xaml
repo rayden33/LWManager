@@ -10,12 +10,24 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="ToolWindow"
         ResizeMode="NoResize">
-    
+
+    <Window.Resources>
+        <XmlDataProvider x:Key="items" XPath="//item">
+            <x:XData>
+                <items >
+                    <item>012</item>
+                    <item>021</item>
+                    <item>013</item>
+                </items>
+            </x:XData>
+        </XmlDataProvider>
+    </Window.Resources>
+
     <Grid ShowGridLines="True" Background="AliceBlue">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="0.7*"/>
             <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
         
@@ -140,7 +152,9 @@
                     <TextBox Text="{Binding Delivery_amount, ConverterCulture='ru-RU', StringFormat = N0}" Name="deliveryAmountTxtBox"
                              Margin="5" Height="20" Width="64"  PreviewTextInput="NumberValidationTextBox" TextChanged="TextBox_TextChanged"/>
                     <Label Content="Место доставки:" FontSize="15" Margin="45,5,5,5"/>
-                    <TextBox Name="deliveryAddressTxtBox" Text="{Binding Delivery_address}" Margin="5" Height="20" Width="100" TextChanged="TextBox_TextChanged_1"/>
+                    <ComboBox Name="deliveryAddressCmbBox" IsEditable="True" Width="150" Height="20"/>
+
+                    <!--<TextBox Name="deliveryAddressTxtBox" Text="{Binding Delivery_address}" Margin="5" Height="20" Width="100" TextChanged="TextBox_TextChanged_1"/>-->
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Дата заказа:" FontSize="15" Margin="5"/>

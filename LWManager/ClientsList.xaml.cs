@@ -34,7 +34,7 @@ namespace LWManager
 
         void GetDbToDataGrid()
         {
-            this.DataContext = dataBaseAC.Clients.Local.ToBindingList();
+            this.DataContext = dataBaseAC.Clients.Local.OrderByDescending(q => q.Last_order_datetime);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

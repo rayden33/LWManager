@@ -66,7 +66,8 @@ namespace LWManager
                     tempTimeSpan = DateTime.Now - tempDateTime;
                 else
                     tempTimeSpan = UnixTimeStampToDateTime(contract.Return_datetime) - tempDateTime;
-                tempViewContract.UsedDays = $"{tempTimeSpan.Days} " + ((contract.Used_days > 0) ? ($"(+{contract.Used_days})") : (""));
+                //tempViewContract.UsedDays = $"{tempTimeSpan.Days} " + ((contract.Used_days > 0) ? ($"(+{contract.Used_days})") : (""));
+                tempViewContract.UsedDays = $"{tempTimeSpan.Days + 1} " + ((contract.Used_days > 0) ? ("") : ("(-1)"));
                 int usedDaysTotal = tempTimeSpan.Days + contract.Used_days;
 
                 if (dataBaseAC.OrderProducts.Where(op => op.Order_id == contract.Order_id && op.Product_id == 5).FirstOrDefault() != null)
@@ -115,6 +116,8 @@ namespace LWManager
                 Payment payment = makePayment.Payment;
                 dataBaseAC.Payments.Add(payment);
                 ReturnedLeaseContract returnedLeaseContract = dataBaseAC.ReturnedLeaseContracts.Where(r => r.Order_id == mWViewContract.OrderId).FirstOrDefault();
+                dataBaseAC.Entry(returnedLeaseContract).State = EntityState.Unchanged;
+                dataBaseAC.SaveChanges();
                 returnedLeaseContract.Paid_amount += payment.Amount;
                 dataBaseAC.Entry(returnedLeaseContract).State = EntityState.Modified;
                 dataBaseAC.SaveChanges();

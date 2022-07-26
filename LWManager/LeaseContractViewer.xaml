@@ -44,7 +44,7 @@
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="1">
                 
                 
-                <ListBox Margin="5" Width="240" HorizontalContentAlignment="Center" Name="otherProductListBox" MaxHeight="180">
+                <ListBox Margin="5" Width="340" HorizontalContentAlignment="Center" Name="otherProductListBox" MaxHeight="180">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -52,6 +52,7 @@
                                 <TextBlock Text="{Binding Return_count}" FontSize="12" Margin="5" />
                                 <TextBlock Text="из" FontSize="12" Margin="5" />
                                 <TextBlock Text="{Binding Count}" FontSize="12" Margin="5" />
+                                <TextBlock Text="{Binding PricePerProduct, ConverterCulture='ru-RU', StringFormat = N0}" FontSize="12" Margin="5" />
                                 <TextBlock Text="{Binding Price, ConverterCulture='ru-RU', StringFormat = N0}" FontSize="12" Margin="5" />
                             </StackPanel>
                         </DataTemplate>
@@ -67,9 +68,13 @@
 
             <StackPanel Grid.Row="1">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Цена доставки:" FontSize="15" Margin="5,5,5,5"/>
+                    <Label Content="Цена доставки:" FontSize="15" Margin="5"/>
                     <Label Name="deliveryAmountLbl" FontSize="15" VerticalAlignment="Center">
                         <TextBlock Text="{Binding Delivery_amount, ConverterCulture='ru-RU', StringFormat = N0}"/>
+                    </Label>
+                    <Label Content="Долг:" Name="debtLbl" FontSize="15" Margin="45,5,5,5" Visibility="Hidden"/>
+                    <Label Name="debtAmountLbl" FontSize="15" VerticalAlignment="Center" Visibility="Hidden">
+                        <TextBlock Text="{Binding Paid_amount, ConverterCulture='ru-RU', StringFormat = N0}"/>
                     </Label>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -88,7 +93,7 @@
                     <Label Content="Дата возврата: " FontSize="15" Margin="45,5,5,5"/>
                     <Label Name="returnDateTimeLbl" Content="**/**/****" FontSize="15" VerticalAlignment="Center"/>
                 </StackPanel>
-                <ListBox Name="paymentListBox" Margin="10" MaxHeight="200">
+                <ListBox Name="paymentListBox" Margin="10" MaxHeight="180">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">

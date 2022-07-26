@@ -22,7 +22,7 @@
             
             <Button Content="Добавить" Width="72" Margin="20" Click="Button_Click"/>
             <Button Content="Изменить" Width="72" Margin="20" Click="Button_Click_2"/>
-            <Button Content="Заказы" Width="72" Margin="20" Click="ClientOrdersBtn_Click"/>
+            <Button Content="Просмотр" Width="72" Margin="20" Click="ClientOrdersBtn_Click"/>
             <!--<Button Content="Удалить" Width="72" Margin="20" Click="Button_Click_1"/>-->
             <Button Content="Заблокировать" Width="100" Margin="120,20,20,20" Click="Button_Click_3" Name="blockingBtn"/>
             
@@ -31,7 +31,8 @@
         <DataGrid HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Stretch" AutoGenerateColumns="False" 
                   ItemsSource="{Binding}" SelectionMode="Single" IsReadOnly="True" MinRowHeight="30" FontSize="18" 
                   x:Name="ClientListDG" KeyUp="ClientListDG_KeyUp" SelectionChanged="ClientListDG_SelectionChanged" 
-                  MouseDoubleClick="ClientListDG_MouseDoubleClick" AlternatingRowBackground="#dbf0fe" Loaded="ClientListDG_Loaded">
+                  MouseDoubleClick="ClientListDG_MouseDoubleClick" AlternatingRowBackground="#dbf0fe" Loaded="ClientListDG_Loaded"
+                  >
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
                     

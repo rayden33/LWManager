@@ -47,41 +47,88 @@ namespace LWManager
             this.DataContext = tmpProducts;*/
 
             this.DataContext = dataBaseAC.Products.Local.Where(p => p.Reference_id == 0).ToList();
+            int tempSum = 0;
+            
 
             foreach (Product prd in dataBaseAC.Products.Local)
             {
+                tempSum = 0;
                 switch (prd.Id)
                 {
                     case 5:
                         bLesaCountLbl.Content = prd.Count;
+                        bLesaOrderCountLbl.Content = getCurrentInOrderProductsCount(5);
+                        bLesaSumCountLbl.Content = ((int)bLesaCountLbl.Content + (int)bLesaOrderCountLbl.Content);
                         break;
                     case 6:
                         mLesaCountLbl.Content = prd.Count;
+                        mLesaOrderCountLbl.Content = getCurrentInOrderProductsCount(6);
+                        mLesaSumCountLbl.Content = ((int)mLesaCountLbl.Content + (int)mLesaOrderCountLbl.Content);
                         break;
                     case 1:
                         bLesaSubCountLbl2.Content = prd.Count;
+                        bLesaSubOrderCountLbl2.Content = getCurrentInOrderProductsCount(1);
+                        bLesaSubSumCountLbl2.Content = ((int)bLesaSubCountLbl2.Content + (int)bLesaSubOrderCountLbl2.Content);
                         break;
                     case 2:
                         bLesaSubCountLbl1.Content = prd.Count;
+                        bLesaSubOrderCountLbl1.Content = getCurrentInOrderProductsCount(2);
+                        bLesaSubSumCountLbl1.Content = ((int)bLesaSubCountLbl1.Content + (int)bLesaSubCountLbl1.Content);
                         break;
                     case 3:
                         bLesaSubCountLbl3.Content = prd.Count;
+                        bLesaSubOrderCountLbl3.Content = getCurrentInOrderProductsCount(3);
+                        bLesaSubSumCountLbl3.Content = ((int)bLesaSubCountLbl3.Content + (int)bLesaSubOrderCountLbl3.Content);
                         break;
                     case 7:
                         mLesaSubCountLbl1.Content = prd.Count;
+                        //bLesaOrderCountLbl.Content = dataBaseAC.OrderProducts.Where(op => op.Product_id == 5).Sum(op => op.Count);
+                        mLesaSubOrderCountLbl1.Content = getCurrentInOrderProductsCount(7);
+                        mLesaSubSumCountLbl1.Content = ((int)mLesaSubCountLbl1.Content + (int)mLesaSubOrderCountLbl1.Content);
                         break;
                     case 8:
                         mLesaSubCountLbl2.Content = prd.Count;
+                        //bLesaOrderCountLbl.Content = dataBaseAC.OrderProducts.Where(op => op.Product_id == 5).Sum(op => op.Count);
+                        mLesaSubOrderCountLbl2.Content = getCurrentInOrderProductsCount(8);
+                        mLesaSubSumCountLbl2.Content = ((int)mLesaSubCountLbl2.Content + (int)mLesaSubOrderCountLbl2.Content);
                         break;
                     case 9:
                         mLesaSubCountLbl3.Content = prd.Count;
+                        //bLesaOrderCountLbl.Content = dataBaseAC.OrderProducts.Where(op => op.Product_id == 5).Sum(op => op.Count);
+                        mLesaSubOrderCountLbl3.Content = getCurrentInOrderProductsCount(9);
+                        mLesaSubSumCountLbl3.Content = ((int)mLesaSubCountLbl3.Content + (int)mLesaSubOrderCountLbl3.Content);
                         break;
                     case 4:
                         kolesikCountLbl.Content = prd.Count;
+                        //bLesaOrderCountLbl.Content = dataBaseAC.OrderProducts.Where(op => op.Product_id == 5).Sum(op => op.Count);
+                        kolesikOrderCountLbl.Content = getCurrentInOrderProductsCount(4);
+                        kolesikSumCountLbl.Content = ((int)kolesikCountLbl.Content + (int)kolesikOrderCountLbl.Content);
                         break;
 
                 }
             }
+        }
+
+        private int getCurrentInOrderProductsCount(int productId)
+        {
+            int count = 0;
+            string tempStr1 = "";
+            string tempStr2 = "";
+
+            if (dataBaseAC.OrderProducts.Where(op => op.Product_id == productId).Count() > 0)
+                tempStr1 = dataBaseAC.OrderProducts.Where(op => op.Product_id == productId).Sum(op => op.Count).ToString();
+            else
+                tempStr1 = "0";
+
+            if (dataBaseAC.ReturnProducts.Where(op => op.Product_id == productId).Count() > 0)
+                tempStr2 = dataBaseAC.ReturnProducts.Where(op => op.Product_id == productId).Sum(op => op.Count).ToString();
+            else
+                tempStr2 = "0";
+
+            count = Convert.ToInt32(tempStr1);
+            count -= Convert.ToInt32(tempStr2);
+
+            return count;
         }
 
 
