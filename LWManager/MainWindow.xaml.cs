@@ -402,7 +402,8 @@ namespace LWManager
 
         private void Button_Click_10(object sender, RoutedEventArgs e)
         {
-            
+            MainStats mainStats = new MainStats();
+            mainStats.Show();
         }
     }
 }
