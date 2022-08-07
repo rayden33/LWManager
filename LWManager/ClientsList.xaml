@@ -23,6 +23,7 @@
             <Button Content="Добавить" Width="72" Margin="20" Click="Button_Click"/>
             <Button Content="Изменить" Width="72" Margin="20" Click="Button_Click_2"/>
             <Button Content="Просмотр" Width="72" Margin="20" Click="ClientOrdersBtn_Click"/>
+            <Button Content="Удалить" Width="72" Margin="20" Click="ClientDelete_Click"/>
             <!--<Button Content="Удалить" Width="72" Margin="20" Click="Button_Click_1"/>-->
             <Button Content="Заблокировать" Width="100" Margin="120,20,20,20" Click="Button_Click_3" Name="blockingBtn"/>
             

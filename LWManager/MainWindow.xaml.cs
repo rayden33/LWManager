@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Data.Entity;
-using System.Threading;
+
 
 namespace LWManager
 {
@@ -217,6 +208,71 @@ namespace LWManager
             MWViewContract mWViewContract = leaseContractDataGrid.SelectedItem as MWViewContract;
             
             returnOrder(mWViewContract);
+
+            if (MessageBox.Show("Напечатать чек?", "Печать", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                return;
+
+            ReturnedLeaseContract returnedLeaseContract = dataBaseAC.ReturnedLeaseContracts.Where(p => p.Order_id == mWViewContract.OrderId).FirstOrDefault();
+            
+            if(returnedLeaseContract != null)
+                PrintInvoiceWithWord(returnedLeaseContract);
+        }
+
+        private void PrintInvoiceWithWord(ReturnedLeaseContract contract)
+        {
+
+            /*Client client = dataBaseAC.Clients.Where(q => q.Id == contract.Client_id).FirstOrDefault();
+            List<Payment> payments = dataBaseAC.Payments.Where(q => q.Order_id == contract.Order_id).ToList();
+            // If using Professional version, put your serial key below.
+            ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+
+            int paymentCount = payments.Count;
+
+            DocumentModel document = DocumentModel.Load("Invoice.docx");
+
+            // Template document contains 4 tables, each contains some set of information.
+            Table[] tables = document.GetChildElements(true, ElementType.Table).Cast<Table>().ToArray();
+
+            // First table contains invoice number and date.
+            Table invoiceTable = tables[0];
+            invoiceTable.Rows[0].Cells[1].Blocks.Add(new Paragraph(document, contract.Contract_id));
+            invoiceTable.Rows[1].Cells[1].Blocks.Add(new Paragraph(document, $"{client.Name} {client.Surname}"));
+            invoiceTable.Rows[2].Cells[1].Blocks.Add(new Paragraph(document, client.Phone_number.ToString()));
+
+            // Second table contains customer data.
+            Table customerTable = tables[1];
+            customerTable.Rows[0].Cells[1].Blocks.Add(new Paragraph(document, contract.Delivery_address));
+            customerTable.Rows[1].Cells[1].Blocks.Add(new Paragraph(document, contract.Delivery_amount.ToString()));
+            customerTable.Rows[2].Cells[1].Blocks.Add(new Paragraph(document, UnixTimeStampToDateTime(contract.Create_datetime).ToString("d MMM yyyy HH:mm")));
+            //customerTable.Rows[3].Cells[1].Blocks.Add(new Paragraph(document, "Joe Smith"));
+
+            // Third table contains amount and prices, it only has one data row in the template document.
+            // So, we'll dynamically add cloned rows for the rest of our data items.
+            Table mainTable = tables[2];
+            for (int i = 1; i < paymentCount; i++)
+                mainTable.Rows.Insert(1, mainTable.Rows[1].Clone(true));
+
+            int total = 0;
+            int rowIndex = 0;
+            foreach (Payment payment in payments)
+            {
+                mainTable.Rows[rowIndex].Cells[0].Blocks.Add(new Paragraph(document, UnixTimeStampToDateTime(payment.Datetime).ToString("d MMM yyyy HH:mm")));
+                mainTable.Rows[rowIndex].Cells[1].Blocks.Add(new Paragraph(document, payment.Payment_type));
+                mainTable.Rows[rowIndex].Cells[2].Blocks.Add(new Paragraph(document, payment.Amount.ToString("0.00")));
+                rowIndex++;
+                total += payment.Amount;
+                //mainTable.Rows[rowIndex].Cells[3].Blocks.Add(new Paragraph(document, price.ToString("0.00")));
+            }
+
+            // Last cell in the last, total, row has some predefined formatting stored in an empty paragraph.
+            // So, in this case instead of adding new paragraph we'll add our data into an existing paragraph.
+            mainTable.Rows.Last().Cells[3].Blocks.Cast<Paragraph>(0).Content.LoadText(total.ToString("0.00"));
+
+            // Fourth table contains notes.
+            Table notesTable = tables[3];
+            notesTable.Rows[1].Cells[0].Blocks.Add(new Paragraph(document, "Payment via check."));
+
+            document.Save("Template Use.docx");*/
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)

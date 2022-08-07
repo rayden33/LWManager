@@ -21,6 +21,7 @@
                 <ColumnDefinition Width=".25*"/>
                 <ColumnDefinition Width=".25*"/>
                 <ColumnDefinition Width=".25*"/>
+                <ColumnDefinition Width=".25*"/>
                 <ColumnDefinition Width=".5*"/>
             </Grid.ColumnDefinitions>
 
@@ -28,6 +29,7 @@
             <Button Grid.Column="1" Margin="15" Content="Оплата" FontWeight="Bold" FontSize="20" Click="Button_Click_1"/>
             <Button Grid.Column="2" Margin="15" Content='Закрыт заказ' FontWeight="Bold" FontSize="20" Click="Button_Click_2"/>
             <Button Grid.Column="3" Margin="15" Content='Возврат' FontWeight="Bold" FontSize="20" Click="Button_Click_3"/>
+            <Button Grid.Column="4" Margin="15" Content='Печать' FontWeight="Bold" FontSize="20" Click="Button_Click_4"/>
 
         </Grid>
 

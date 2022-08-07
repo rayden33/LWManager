@@ -47,6 +47,7 @@ namespace LWManager
                 //client.Id++;
                 //MessageBox.Show(client.Id.ToString());
                 dataBaseAC.SaveChanges();
+                GetDbToDataGrid();
             }
         }
 
@@ -95,6 +96,7 @@ namespace LWManager
                     client.Address = clientEditor.Client.Address;
                     dataBaseAC.Entry(client).State = EntityState.Modified;
                     dataBaseAC.SaveChanges();
+                    GetDbToDataGrid();
                 }
             }
         }
@@ -205,6 +207,83 @@ namespace LWManager
 
             ClientOrderList clientOrderList = new ClientOrderList(dataBaseAC, SelectedClient);
             clientOrderList.Show();
+        }
+
+        private void ClientDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (ClientListDG.SelectedItem == null) return;
+            SelectedClient = ClientListDG.SelectedItem as Client;
+
+            DeleteClientWithGlobalChanges(SelectedClient);
+        }
+
+        private void DeleteClientWithGlobalChanges(Client client)
+        {
+            List<ArchiveLeaseContract> archiveLeaseContracts = new List<ArchiveLeaseContract>();
+            List<LeaseContract> leaseContracts = new List<LeaseContract>();
+            List<OrderProduct> orderProducts = new List<OrderProduct>();
+            List<Payment> payments = new List<Payment>();
+            List<ReturnProduct> returnProducts = new List<ReturnProduct>();
+            List<ReturnedLeaseContract> returnedLeaseContracts = new List<ReturnedLeaseContract>();
+            archiveLeaseContracts.AddRange(dataBaseAC.ArchiveLeaseContracts.Where(q => q.Client_id == SelectedClient.Id).ToList());
+            leaseContracts.AddRange(dataBaseAC.LeaseContracts.Where(q => q.Client_id == SelectedClient.Id).ToList());
+            returnedLeaseContracts.AddRange(dataBaseAC.ReturnedLeaseContracts.Where(q => q.Client_id == SelectedClient.Id).ToList());
+
+
+            if (leaseContracts.Count > 0)
+            {
+                MessageBox.Show("Сперва закройте все активные заказы этого клиента на главном окне!!!");
+                return;
+            }
+            
+            if (returnedLeaseContracts.Count > 0)
+            {
+                MessageBox.Show("Закройте все активные заказы этого клиента на окне возврата!!!");
+                return;
+            }
+
+            if (MessageBox.Show("Точно хотите удалить?", "Удалить?", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                return;
+
+
+            /// ArchiveLeaseContract cleaning
+            foreach (ArchiveLeaseContract contract in archiveLeaseContracts)
+            {
+
+                /// Order cleaning
+                orderProducts.Clear();
+                orderProducts.AddRange(dataBaseAC.OrderProducts.Where(q => q.Order_id == contract.Order_id).ToList());
+                foreach(OrderProduct orderProduct in orderProducts)
+                {
+                    dataBaseAC.OrderProducts.Remove(orderProduct);
+                    dataBaseAC.SaveChanges();
+                }
+
+                /// Payment cleaning
+                payments.Clear();
+                payments.AddRange(dataBaseAC.Payments.Where(q => q.Order_id == contract.Order_id).ToList());
+                foreach (Payment payment in payments)
+                {
+                    dataBaseAC.Payments.Remove(payment);
+                    dataBaseAC.SaveChanges();
+                }
+
+                returnProducts.Clear();
+                returnProducts.AddRange(dataBaseAC.ReturnProducts.Where(q => q.Order_id == contract.Order_id).ToList());
+                foreach(ReturnProduct returnProduct in returnProducts)
+                {
+                    dataBaseAC.ReturnProducts.Remove(returnProduct);
+                    dataBaseAC.SaveChanges();
+                }
+
+
+                dataBaseAC.ArchiveLeaseContracts.Remove(contract);
+                dataBaseAC.SaveChanges();
+            }
+
+            dataBaseAC.Clients.Remove(client);
+            dataBaseAC.SaveChanges();
+            GetDbToDataGrid();
         }
     }
 }
