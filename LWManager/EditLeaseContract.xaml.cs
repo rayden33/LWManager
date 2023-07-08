@@ -22,6 +22,7 @@ namespace LWManager
     {
 
         public LeaseContract LeaseContract { get; private set; }
+        public ReturnedLeaseContract ReturnedLeaseContract { get; private set; }
 
         ApplicationContext dataBaseAC;
 
@@ -49,14 +50,44 @@ namespace LWManager
 
             
         }
+        public EditLeaseContract(ReturnedLeaseContract lc, ApplicationContext dbAC)
+        {
+            InitializeComponent();
+
+            ReturnedLeaseContract = lc;
+            dataBaseAC = dbAC;
+
+            contractIdTxtBox.Text = ReturnedLeaseContract.Id.ToString();
+            deliveryAmountTxtBox.Text = ReturnedLeaseContract.Delivery_amount.ToString();
+            deliveryAddressTxtBox.Text = ReturnedLeaseContract.Delivery_address.ToString();
+            createDatePicker.SelectedDate = new DateTime(1970, 1, 1).AddSeconds(ReturnedLeaseContract.Create_datetime);
+
+
+            //Height = SystemParameters.PrimaryScreenHeight / 1.5;
+            //Width = SystemParameters.PrimaryScreenWidth / 3.84;
+
+
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            LeaseContract.Delivery_address = deliveryAddressTxtBox.Text;
-            LeaseContract.Delivery_amount = Convert.ToInt32(deliveryAmountTxtBox.Text);
-            LeaseContract.Create_datetime = (Int32)(createDatePicker.SelectedDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            LeaseContract.Used_days = (usedDayChBox.IsChecked == true ? 0 : 1);
-            DialogResult = true;
+            if(LeaseContract != null)
+            {
+                LeaseContract.Delivery_address = deliveryAddressTxtBox.Text;
+                LeaseContract.Delivery_amount = Convert.ToInt32(deliveryAmountTxtBox.Text);
+                LeaseContract.Create_datetime = (Int32)(createDatePicker.SelectedDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                LeaseContract.Used_days = (usedDayChBox.IsChecked == true ? 0 : 1);
+                DialogResult = true;
+            }
+            else
+            {
+                ReturnedLeaseContract.Delivery_address = deliveryAddressTxtBox.Text;
+                ReturnedLeaseContract.Delivery_amount = Convert.ToInt32(deliveryAmountTxtBox.Text);
+                ReturnedLeaseContract.Create_datetime = (Int32)(createDatePicker.SelectedDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                ReturnedLeaseContract.Used_days = (usedDayChBox.IsChecked == true ? 0 : 1);
+                DialogResult = true;
+            }
+            
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {

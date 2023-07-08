@@ -285,5 +285,17 @@ namespace LWManager
             dataBaseAC.SaveChanges();
             GetDbToDataGrid();
         }
+
+
+        private void ClientPrint_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Please install xlsx format");
+        }
+
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

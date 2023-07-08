@@ -35,6 +35,7 @@
                         <ComboBoxItem Content="Наличные" IsSelected="True"/>
                         <ComboBoxItem Content="Перечисление"/>
                         <ComboBoxItem Content="Возврать"/>
+                        <ComboBoxItem Content="Скидка"/>
                     </ComboBox>
                 </StackPanel>
             </StackPanel>

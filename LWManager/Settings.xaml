@@ -5,37 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LWManager"
         mc:Ignorable="d"
-        Title="OrderProducts" Height="480" Width="320"
+        Title="OrderProducts" Height="620" Width="320"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None">
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition  Height=".8*"/>
-            <RowDefinition  Height=".2*"/>
+            <RowDefinition/>
+            <RowDefinition  Height="1.1*"/>
+            <RowDefinition  Height=".9*"/>
+            <RowDefinition  Height=".25*"/>
         </Grid.RowDefinitions>
 
         <StackPanel HorizontalAlignment="Center" Grid.Row="0">
+            <Label Content="Основные данные" FontSize="20"/>
+            <Button Name="companyLogoBtn" Click="companyLogoBtn_Click" IsDefault="True">
+                <Image Name="companyLogoImg" Height="90"/>
+            </Button>
+            <Label Content="Имя компании:" FontSize="16"/>
+            <TextBox Height="20" Margin="5,5,5,5" Name="companyNameTxtBox" />
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Center" Grid.Row="1">
             <Label Content="База данных" FontSize="20"/>
             <Label Content="Экспорт и импорт:" FontSize="16"/>
             <Button Content="Экспорт" Width="64" Margin="10" Click="ExportBtn" IsDefault="True"/>
             <Button Content="Импорт" Width="64" Margin="10" Click="ImportBtn" IsDefault="True"/>
             <Label Content="Долговой лимит:" FontSize="16"/>
             <TextBox Height="20" Margin="5,0" Name="debtLimitTxtBox" PreviewTextInput="NumberValidationTextBox"/>
-            <Button Content="Сохранить" Width="64" Margin="10" Click="Button_Click_1" IsDefault="True"/>
         </StackPanel>
 
-        <StackPanel HorizontalAlignment="Center" Grid.Row="1">
+        <StackPanel HorizontalAlignment="Center" Grid.Row="2">
             <Label Content="Сменить пароль" FontSize="20"/>
             <Label Content="Текущий пароль:" FontSize="16"/>
             <TextBox Height="20" Margin="5,5,5,5" Name="currentPasswordTxtBox" />
             <Label Content="Новый пароль" FontSize="16"/>
             <TextBox Height="20" Margin="5,5,5,5" Name="newPasswordTxtBox" />
-            
+
         </StackPanel>
 
-        
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="2">
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="3">
             <Button Content="Сохранить" Width="64" Margin="10" Click="Button_Click" IsDefault="True"/>
             <Button Content="Отмена" Width="64" Margin="10" IsCancel="True"/>
         </StackPanel>

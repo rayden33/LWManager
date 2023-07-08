@@ -9,6 +9,27 @@
         WindowState="Maximized"
         WindowStyle="ThreeDBorderWindow">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <WpfPlot Name="OrderPlot" Grid.Column="0" Grid.Row="0"/>
+        <WpfPlot Name="PaymentPlot" Grid.Column="1" Grid.Row="0"/>
+        <StackPanel Grid.Column = "0" Grid.Row="1" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Приход:" Padding="5,0"/>
+                <Label Content="0" Name="inPaymentAmountLbl" Padding="5,0"/>
+                <Label Content="сум." Padding="5,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Возврат:" Padding="5,0"/>
+                <Label Content="0" Name="outPaymentAmountLbl" Padding="5,0"/>
+                <Label Content="сум." Padding="5,0"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

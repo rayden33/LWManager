@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
+using Microsoft.Office.Core;
 
 namespace LWManager
 {
@@ -256,67 +260,19 @@ namespace LWManager
         private void PrintInvoiceWithWord(ReturnedLeaseContract contract)
         {
 
-            /*
-            // If using Professional version, put your serial key below.
-            ComponentInfo.SetLicense("FREE-LIMITED-KEY");
-
-            
-
-            DocumentModel document = DocumentModel.Load("Invoice.docx");
-
-            // Template document contains 4 tables, each contains some set of information.
-            Table[] tables = document.GetChildElements(true, ElementType.Table).Cast<Table>().ToArray();
-
-            // First table contains invoice number and date.
-            Table invoiceTable = tables[0];
-            invoiceTable.Rows[0].Cells[1].Blocks.Add(new Paragraph(document, contract.Contract_id));
-            invoiceTable.Rows[1].Cells[1].Blocks.Add(new Paragraph(document, $"{client.Name} {client.Surname}"));
-            invoiceTable.Rows[2].Cells[1].Blocks.Add(new Paragraph(document, client.Phone_number.ToString()));
-
-            // Second table contains customer data.
-            Table customerTable = tables[1];
-            customerTable.Rows[0].Cells[1].Blocks.Add(new Paragraph(document, contract.Delivery_address));
-            customerTable.Rows[1].Cells[1].Blocks.Add(new Paragraph(document, contract.Delivery_amount.ToString()));
-            customerTable.Rows[2].Cells[1].Blocks.Add(new Paragraph(document, UnixTimeStampToDateTime(contract.Create_datetime).ToString("d MMM yyyy HH:mm")));
-            //customerTable.Rows[3].Cells[1].Blocks.Add(new Paragraph(document, "Joe Smith"));
-
-            // Third table contains amount and prices, it only has one data row in the template document.
-            // So, we'll dynamically add cloned rows for the rest of our data items.
-            Table mainTable = tables[2];
-            for (int i = 1; i < paymentCount; i++)
-                mainTable.Rows.Insert(1, mainTable.Rows[1].Clone(true));
-
-            int total = 0;
-            int rowIndex = 0;
-            foreach (Payment payment in payments)
-            {
-                mainTable.Rows[rowIndex].Cells[0].Blocks.Add(new Paragraph(document, UnixTimeStampToDateTime(payment.Datetime).ToString("d MMM yyyy HH:mm")));
-                mainTable.Rows[rowIndex].Cells[1].Blocks.Add(new Paragraph(document, payment.Payment_type));
-                mainTable.Rows[rowIndex].Cells[2].Blocks.Add(new Paragraph(document, payment.Amount.ToString("0.00")));
-                rowIndex++;
-                total += payment.Amount;
-                //mainTable.Rows[rowIndex].Cells[3].Blocks.Add(new Paragraph(document, price.ToString("0.00")));
-            }
-
-            // Last cell in the last, total, row has some predefined formatting stored in an empty paragraph.
-            // So, in this case instead of adding new paragraph we'll add our data into an existing paragraph.
-            mainTable.Rows.Last().Cells[3].Blocks.Cast<Paragraph>(0).Content.LoadText(total.ToString("0.00"));
-
-            // Fourth table contains notes.
-            /*Table notesTable = tables[3];
-            notesTable.Rows[1].Cells[0].Blocks.Add(new Paragraph(document, "Payment via check."));
-
-            document.Save("Template Use.docx");*/
-
             Client client = dataBaseAC.Clients.Where(q => q.Id == contract.Client_id).FirstOrDefault();
             List<Payment> payments = dataBaseAC.Payments.Where(q => q.Order_id == contract.Order_id).ToList();
             List<OrderProduct> orderProducts = dataBaseAC.OrderProducts.Where(q => q.Order_id == contract.Order_id).ToList();
 
             int paymentCount = payments.Count;
-
+            int usedDays = (UnixTimeStampToDateTime(contract.Return_datetime) - UnixTimeStampToDateTime(contract.Create_datetime)).Days;
+            int shouldPay = contract.Price_per_day * (usedDays + contract.Used_days) + contract.Delivery_amount;
+            int debt = shouldPay - contract.Paid_amount;
+            string cellNumberFormat = "#,#";
 
             try
             {
+/// Document initialization
                 this.Cursor = Cursors.Wait;
                 var xlApp = new Microsoft.Office.Interop.Excel.Application();
                 xlApp.DefaultSaveFormat = Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook;
@@ -324,107 +280,195 @@ namespace LWManager
                 {
                     var xlWorkBook = xlApp.Workbooks.Add();
                     var sheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                    sheet.Columns["D:G"].NumberFormat = "#,##0";
-                    int row = 1;
-                    sheet.Cells[row, 1].Font.Bold = true;
-                    sheet.Cells[row, 1].HorizontalAlignment = 4;
-                    sheet.Cells[row, 1] = "Ф.И.О. заказчика:";
-                    sheet.Cells[row, 2] = $"{client.Name} {client.Surname}";
-                    row++;
-                    sheet.Cells[row, 1].Font.Bold = true;
-                    sheet.Cells[row, 1].HorizontalAlignment = 4;
-                    sheet.Cells[row, 1] = "Номер договора:";
-                    sheet.Cells[row, 2].NumberFormat = "@";
-                    sheet.Cells[row, 2] = contract.Contract_id;
-                    row++;
-                    sheet.Cells[row, 1].Font.Bold = true;
-                    sheet.Cells[row, 1].HorizontalAlignment = 4;
-                    sheet.Cells[row, 1] = "Дата заказа:";
-                    int usedDays = (UnixTimeStampToDateTime(contract.Return_datetime) - UnixTimeStampToDateTime(contract.Create_datetime)).Days;
-                    sheet.Cells[row, 2] = $"{UnixTimeStampToDateTime(contract.Create_datetime).ToString("d MMM yyyy")} - {UnixTimeStampToDateTime(contract.Return_datetime).ToString("d MMM yyyy")}";
-                    row+=2;
-                    var range = sheet.Range[$"B{row}:D{row}"];
+
+/// Company info
+    /// Company logo
+                    if(File.Exists($".\\{Properties.Settings.Default.CompanyLogoImageName}"))
+                    {
+                        Microsoft.Office.Interop.Excel.Range oRange = (Microsoft.Office.Interop.Excel.Range)sheet.Cells[1, 3];
+                        float Left = (float)((double)oRange.Left);
+                        float Top = (float)((double)oRange.Top);
+                        const float ImageSize = 60;
+                        sheet.Shapes.AddPicture($"{AppDomain.CurrentDomain.BaseDirectory}\\{Properties.Settings.Default.CompanyLogoImageName}", MsoTriState.msoFalse, MsoTriState.msoCTrue, Left, Top, ImageSize, ImageSize);
+                    }
+
+/// Header text
+                    int row = 3;
+                    var range = sheet.Range[$"A{row}:H{row}"];
                     range.Font.Bold = true;
                     range.HorizontalAlignment = 3;
                     range.MergeCells = true;
-                    range.Value = "Оплаты заказчика";
+                    range.Font.Size = 24;
+                    range.Value = "ЧЕК";
+
+    /// First header table
+                    sheet.Cells.Range[$"B{row+2}:G{row+4}"].Borders.LineStyle = 1;
+        /// First row of header table
+                    row += 2;
+            /// Column left part
+                    sheet.Cells[row, 2].Font.Bold = true;
+                    sheet.Cells[row, 2].HorizontalAlignment = 4;
+                    sheet.Cells[row, 2] = "Номер договора:";
+                    sheet.Range[$"B{row}:C{row}"].MergeCells = true;
+            /// Column right part
+                    sheet.Cells[row, 4].HorizontalAlignment = 3;
+                    sheet.Cells[row, 4] = $"{contract.Contract_id}";
+                    sheet.Range[$"D{row}:G{row}"].MergeCells = true;
+        /// Second row of header table
                     row++;
-                    sheet.Cells[row, 2] = "Дата оплаты";
-                    sheet.Cells[row, 3] = "Сумма оплаты";
-                    sheet.Cells[row, 4] = "Способ оплаты";
-                    range = sheet.Range[$"B{row}:D{row}"];
+            /// Column left part
+                    sheet.Cells[row, 2].Font.Bold = true;
+                    sheet.Cells[row, 2].HorizontalAlignment = 4;
+                    sheet.Cells[row, 2] = "Ф.И.О. заказчика:";
+                    sheet.Range[$"B{row}:C{row}"].MergeCells = true;
+            /// Column right part
+                    sheet.Cells[row, 4].HorizontalAlignment = 3;
+                    sheet.Cells[row, 4] = $"{client.Name} {client.Surname}";
+                    sheet.Range[$"D{row}:G{row}"].MergeCells = true;
+        /// Third row of header table
+                    row++;
+            /// Column left part
+                    sheet.Cells[row, 2].Font.Bold = true;
+                    sheet.Cells[row, 2].HorizontalAlignment = 4;
+                    sheet.Cells[row, 2] = "Номер телефон заказчика:";
+                    sheet.Range[$"B{row}:C{row}"].MergeCells = true;
+            /// Column right part
+                    sheet.Cells[row, 4].HorizontalAlignment = 3;
+                    sheet.Cells[row, 4] = $"{client.Phone_number}";
+                    sheet.Range[$"D{row}:G{row}"].MergeCells = true;
+
+    /// Second header table
+                    sheet.Cells.Range[$"B{row + 2}:G{row + 4}"].Borders.LineStyle = 1;
+        /// First row of header table
+                    row += 2;
+            /// Column left part
+                    sheet.Cells[row, 2].Font.Bold = true;
+                    sheet.Cells[row, 2].HorizontalAlignment = 4;
+                    sheet.Cells[row, 2] = "Место доставки:";
+                    sheet.Range[$"B{row}:C{row}"].MergeCells = true;
+            /// Column right part
+                    sheet.Cells[row, 4].HorizontalAlignment = 3;
+                    sheet.Cells[row, 4] = $"{contract.Delivery_address}";
+                    sheet.Range[$"D{row}:G{row}"].MergeCells = true;
+        /// Second row of header table
+                    row++;
+            /// Column left part
+                    sheet.Cells[row, 2].Font.Bold = true;
+                    sheet.Cells[row, 2].HorizontalAlignment = 4;
+                    sheet.Cells[row, 2] = "Цена доставки:";
+                    sheet.Range[$"B{row}:C{row}"].MergeCells = true;
+            /// Column right part
+                    sheet.Cells[row, 4].HorizontalAlignment = 3;
+                    sheet.Cells[row, 4].NumberFormat = "#,#";
+                    sheet.Cells[row, 4] = $"{contract.Delivery_amount}";
+                    sheet.Range[$"D{row}:G{row}"].MergeCells = true;
+        /// Third row of header table
+                    row++;
+            /// Column left part
+                    sheet.Cells[row, 2].Font.Bold = true;
+                    sheet.Cells[row, 2].HorizontalAlignment = 4;
+                    sheet.Cells[row, 2] = "Дата заказа:";
+                    sheet.Range[$"B{row}:C{row}"].MergeCells = true;
+            /// Column right part
+                    sheet.Cells[row, 4].HorizontalAlignment = 3;
+                    sheet.Cells[row, 4] = $"{UnixTimeStampToDateTime(contract.Create_datetime).ToString("d MMM yyyy")} - {UnixTimeStampToDateTime(contract.Return_datetime).ToString("d MMM yyyy")}"; ;
+                    sheet.Range[$"D{row}:G{row}"].MergeCells = true;
+
+/// Payments table
+    /// Header text
+                    row += 2;
+                    range = sheet.Range[$"B{row}:G{row}"];
+                    range.Font.Bold = true;
+                    range.HorizontalAlignment = 3;
+                    range.MergeCells = true;
+                    range.Font.Size = 18;
+                    range.Value = "ОПЛАТЫ ЗАКАЗЧИКА";
+    /// Table body
+        /// Table column headers row
+                    row++;
+                    sheet.Cells[row, 3] = "№";
+                    sheet.Cells[row, 4] = "Дата оплаты";
+                    sheet.Cells[row, 5] = "Сумма оплаты";
+                    sheet.Cells[row, 6] = "Способ оплаты";
+                    range = sheet.Range[$"C{row}:F{row}"];
                     range.Font.Bold = true;
                     range.HorizontalAlignment = 3;
                     range.Borders.LineStyle = 1;
                     range.Borders.Weight = 3;
+        /// Table column value rows
                     row++;
-
-                    /// Payments table part
                     int total = 0;
+                    int rowNum = 0;
                     foreach (Payment payment in payments)
                     {
-
-                        sheet.Cells[row, 2] = UnixTimeStampToDateTime(payment.Datetime).ToString("d MMM yyyy");
-                        sheet.Cells[row, 3] = payment.Payment_type;
-                        sheet.Cells[row, 4] = payment.Amount.ToString("0.00");
-                        range = sheet.Range[$"B{row}:D{row}"];
-                        range.Borders.LineStyle = 1;
+                        rowNum++;
+                        sheet.Cells[row, 3] = rowNum;
+                        sheet.Cells[row, 4] = UnixTimeStampToDateTime(payment.Datetime).ToString("d MMM yyyy");
+                        sheet.Cells[row, 5] = payment.Payment_type;
+                        sheet.Cells[row, 6].NumberFormat = cellNumberFormat;
+                        sheet.Cells[row, 6] = payment.Amount;
+                        sheet.Range[$"C{row}:F{row}"].Borders.LineStyle = 1;
                         row++;
 
                         total += payment.Amount;
                     }
-                    if(payments.Count == 0)
+                    /// No payments option/
+                    if (payments.Count == 0)
                     {
-                        range = sheet.Range[$"B{row}:D{row}"];
+                        range = sheet.Range[$"C{row}:F{row}"];
                         range.HorizontalAlignment = 3;
                         range.Borders.LineStyle = 1;
                         range.MergeCells = true;
                         range.Value = "Не оплачено";
                     }
-                    sheet.Cells[row, 3] = "Общее:";
-                    sheet.Cells[row, 4] = total.ToString("0.00");
-                    range = sheet.Range[$"C{row}:D{row}"];
+    /// Table footer
+                    sheet.Cells[row, 5] = "Общее:";
+                    sheet.Cells[row, 6].NumberFormat = cellNumberFormat;
+                    sheet.Cells[row, 6] = total;
+                    range = sheet.Range[$"E{row}:F{row}"];
                     range.Borders.LineStyle = 1;
                     range.Font.Bold = true;
-                    row++;
-                    /// End
+                    range.Font.Size = 16;
 
-                    /// Order table part
+/// Orders table
+    /// Header text
                     row += 2;
-                    range = sheet.Range[$"B{row}:E{row}"];
+                    range = sheet.Range[$"B{row}:G{row}"];
                     range.Font.Bold = true;
                     range.HorizontalAlignment = 3;
                     range.MergeCells = true;
-                    range.Value = "Заказанные продукты (1 день)";
+                    range.Font.Size = 18;
+                    range.Value = "ЗАКАЗАННЫЕ ПРОДУКТЫ (за 1 день)";
+    /// Table body
+        /// Table column headers row
                     row++;
-                    sheet.Cells[row, 2] = "Название";
-                    sheet.Cells[row, 3] = "Количество";
-                    sheet.Cells[row, 4] = "Сумма(1 шт.)";
-                    sheet.Cells[row, 5] = "Сумма";
-
-                    range = sheet.Range[$"B{row}:E{row}"];
+                    sheet.Cells[row, 3] = "Название";
+                    sheet.Cells[row, 4] = "Количество";
+                    sheet.Cells[row, 5] = "Сумма(1 шт.)";
+                    sheet.Cells[row, 6] = "Сумма";
+                    range = sheet.Range[$"C{row}:F{row}"];
                     range.Font.Bold = true;
                     range.HorizontalAlignment = 3;
                     range.Borders.LineStyle = 1;
                     range.Borders.Weight = 3;
+        /// Table column value rows
                     row++;
-
                     total = 0;
                     string productName = "";
                     foreach (OrderProduct orderProduct in orderProducts)
                     {
+                        sheet.Range[$"E{row}:F{row}"].NumberFormat = cellNumberFormat;
+                        sheet.Range[$"C{row}:F{row}"].Borders.LineStyle = 1;
                         productName = dataBaseAC.Products.Where(p => p.Id == orderProduct.Product_id).FirstOrDefault().Name;
-                        sheet.Cells[row, 2] = productName;
-                        sheet.Cells[row, 3] = orderProduct.Count;
-                        sheet.Cells[row, 4] = orderProduct.Price.ToString("0.00");
-                        sheet.Cells[row, 5] = (orderProduct.Count * orderProduct.Price).ToString("0.00");
-                        range = sheet.Range[$"B{row}:E{row}"];
-                        range.Borders.LineStyle = 1;
+                        sheet.Cells[row, 3] = productName;
+                        sheet.Cells[row, 4] = orderProduct.Count;
+                        sheet.Cells[row, 5] = orderProduct.Price;
+                        sheet.Cells[row, 6] = (orderProduct.Count * orderProduct.Price);
                         row++;
 
                         total += orderProduct.Count * orderProduct.Price;
                     }
-
+                    /// No payments option
                     if (orderProducts.Count == 0)
                     {
                         range = sheet.Range[$"B{row}:E{row}"];
@@ -433,57 +477,56 @@ namespace LWManager
                         range.MergeCells = true;
                         range.Value = "Нет продутов";
                     }
-
-                    sheet.Cells[row, 4] = "Общее:";
-                    sheet.Cells[row, 5] = total.ToString("0.00");
-                    range = sheet.Range[$"D{row}:E{row}"];
+    /// Table footer
+                    sheet.Cells[row, 5] = "Общее:";
+                    sheet.Cells[row, 6].NumberFormat = cellNumberFormat;
+                    sheet.Cells[row, 6] = total;
+                    range = sheet.Range[$"E{row}:F{row}"];
                     range.Borders.LineStyle = 1;
                     range.Font.Bold = true;
-                    row++;
-                    /// End
+                    range.Font.Size = 16;
 
-
-                    /// Total table part
+/// Total table part
+    /// Header text
                     row += 2;
-                    range = sheet.Range[$"C{row}:G{row}"];
+                    range = sheet.Range[$"B{row}:F{row}"];
                     range.Font.Bold = true;
                     range.HorizontalAlignment = 3;
                     range.MergeCells = true;
                     range.Value = "ИТОГО";
+    /// Table body
+        /// Table column headers row
                     row++;
-                    sheet.Cells[row, 3] = "Кол-во дней";
+                    sheet.Cells[row, 2] = "Кол-во дней";
+                    sheet.Cells[row, 3] = "Оплата за 1 день";
                     sheet.Cells[row, 4] = "Цена доставки";
                     sheet.Cells[row, 5] = "Надо оплатить";
                     sheet.Cells[row, 6] = "Оплачено";
                     sheet.Cells[row, 7] = "Долг";
-                    
-
-                    range = sheet.Range[$"C{row}:G{row}"];
+                    range = sheet.Range[$"B{row}:G{row}"];
                     range.Font.Bold = true;
                     range.HorizontalAlignment = 3;
                     range.Borders.LineStyle = 1;
                     range.Borders.Weight = 3;
+        /// Table column value rows
                     row++;
-
-                    total = 0;
-                    sheet.Cells[row, 3] = $"{usedDays} + {contract.Used_days}";
+                    sheet.Range[$"C{row}:G{row}"].NumberFormat = cellNumberFormat;
+                    sheet.Cells[row, 2] = $"{usedDays} + {contract.Used_days}";
+                    sheet.Cells[row, 3] = total;
                     sheet.Cells[row, 4] = contract.Delivery_amount;
-                    int shouldPay = contract.Price_per_day * (usedDays + contract.Used_days) + contract.Delivery_amount;
                     sheet.Cells[row, 5] = shouldPay;
                     sheet.Cells[row, 6] = contract.Paid_amount;
-                    int debt = shouldPay - contract.Paid_amount;
                     if (debt > 0)
+                    {
+                        sheet.Cells[row, 7].NumberFormat = cellNumberFormat;
                         sheet.Cells[row, 7] = debt;
+                    }
                     else
                         sheet.Cells[row, 7] = "Долгов нету";
-                    range = sheet.Range[$"C{row}:G{row}"];
-                    range.Borders.LineStyle = 1;
+                    sheet.Range[$"B{row}:G{row}"].Borders.LineStyle = 1;
                     row++;
 
-                    /// End
-
-
-
+/// Print settings
                     sheet.Columns["A:H"].EntireColumn.AutoFit();
                     sheet.PageSetup.PrintArea = "$A$1:$H$" + (row + 1).ToString();
                     sheet.PageSetup.Zoom = false;
@@ -501,6 +544,23 @@ namespace LWManager
             {
                 this.Cursor = Cursors.Arrow;
             }
+
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            if (leaseContractDataGrid.SelectedItem == null)
+                return;
+            MWViewContract mWViewContract = leaseContractDataGrid.SelectedItem as MWViewContract;
+
+            EditLeaseContract editLeaseContract = new EditLeaseContract(dataBaseAC.ReturnedLeaseContracts.Where(l => l.Order_id == mWViewContract.OrderId).FirstOrDefault(), dataBaseAC);
+            if (editLeaseContract.ShowDialog() == true)
+            {
+                dataBaseAC.Entry(editLeaseContract.ReturnedLeaseContract).State = EntityState.Modified;
+                dataBaseAC.SaveChanges();
+            }
+
+            GetDbToDataGrid();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace LWManager
         {
             Payment.Payment_type = paymentTypeCombox.Text;
             Payment.Datetime = (Int32)(paymentDatePicker.SelectedDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            if (paymentTypeCombox.Text == "Возврать")
+            if (paymentTypeCombox.Text.ToLower().StartsWith("возврать"))
                 Payment.Amount *= -1;
             DialogResult = true;
         }

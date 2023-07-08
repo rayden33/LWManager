@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Data.Entity;
-
+using System.IO;
 
 namespace LWManager
 {
@@ -26,7 +26,8 @@ namespace LWManager
         {
             InitializeComponent();
 
-            
+            LoadTmpInfo();
+
             /// <-- For datetime label
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -458,8 +459,17 @@ namespace LWManager
 
         private void Button_Click_10(object sender, RoutedEventArgs e)
         {
-            MainStats mainStats = new MainStats();
+            MainStats mainStats = new MainStats(dataBaseAC);
             mainStats.Show();
+        }
+
+        private void LoadTmpInfo()
+        {
+            if(File.Exists(".\\~companyLogo.png"))
+            {
+                File.Copy(".\\~companyLogo.png", ".\\companyLogo.png", true);
+                File.Delete(".\\~companyLogo.png");
+            }
         }
     }
 }

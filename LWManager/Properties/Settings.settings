@@ -8,5 +8,17 @@
     <Setting Name="DebtLimit" Type="System.Int64" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="CompanyName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">company</Value>
+    </Setting>
+    <Setting Name="CompanyLogoImageName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">companyLogo.png</Value>
+    </Setting>
+    <Setting Name="DatabaseFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LesaDataBase.db</Value>
+    </Setting>
+    <Setting Name="DatabaseArchiveFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OldDB</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
